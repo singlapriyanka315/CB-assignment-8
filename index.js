@@ -21,25 +21,25 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname,'public')))
 
 
-app.get('/home',async (req,res)=>{
+app.get('/',async (req,res)=>{
     const data=await Data.find({});
     res.render('home',{data});
 })
-app.get('/home/enter',(req,res)=>{
+app.get('//enter',(req,res)=>{
     res.render('enter');
 })
-app.post('/home',async(req,res)=>{
+app.post('/',async(req,res)=>{
     const {name,email,phone,cinh,cinm}=req.body;
     sendemail(email,cinh,cinm);
     await Data.create({name,email,phone,cinh,cinm});
-    res.redirect('/home');
+    res.redirect('/');
 })
-app.get('/home/:id',async(req,res)=>{
+app.get('//:id',async(req,res)=>{
     const {id}=req.params;
     const d=await Data.findById(id);
     res.render('exit',{d});
 })
-app.put('/home/:id',async(req,res)=>{
+app.put('//:id',async(req,res)=>{
     const {id}=req.params;
     const {couth,coutm}=req.body;
     const oh=couth;
@@ -47,12 +47,12 @@ app.put('/home/:id',async(req,res)=>{
     const d=await Data.findById(id)
     sendexmail(d.email,oh,om)
     await Data.findByIdAndUpdate(id,{$set:{status:"Checked Out",couth:oh,coutm,om}});
-    res.redirect('/home');
+    res.redirect('/');
 })
-app.delete('/home/:id',async (req,res)=>{
+app.delete('//:id',async (req,res)=>{
     const {id}=req.params;
     await Data.findByIdAndDelete(id);
-    res.redirect('/home');
+    res.redirect('/');
 })
 
 
